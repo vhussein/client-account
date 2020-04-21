@@ -2,14 +2,14 @@ package com.azlan.test.clientaccount.service.ifc;
 
 import com.azlan.test.clientaccount.model.entity.AccountEntity;
 
-import java.util.Optional;
+import java.util.List;
 
 
 public interface AccountServiceIfc {
 
     Iterable<AccountEntity> getAllAccounts();
 
-    Optional<AccountEntity> getAccount(Long accountId);
+    List<AccountEntity> getAccountByClientId(Long clientId);
 
     void addAccount(AccountEntity account);
 }

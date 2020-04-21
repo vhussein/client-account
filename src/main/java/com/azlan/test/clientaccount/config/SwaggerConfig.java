@@ -31,7 +31,7 @@ public class SwaggerConfig {
     private ApiInfo apiEndPointsInfo() {
 
         return new ApiInfoBuilder().title("Spring Boot REST API")
-                .description("Test Client REST API")
+                .description("Client Account REST API")
                 .contact(new Contact("Azlan", "www.mytest.net", "vhussein80@gmail.com"))
                 .version("1.0.0")
                 .build();

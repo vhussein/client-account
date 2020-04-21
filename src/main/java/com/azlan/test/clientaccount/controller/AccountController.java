@@ -1,6 +1,5 @@
 package com.azlan.test.clientaccount.controller;
 
-import com.azlan.test.clientaccount.exception.ResourceNotFoundException;
 import com.azlan.test.clientaccount.model.Account;
 import com.azlan.test.clientaccount.model.entity.AccountEntity;
 import com.azlan.test.clientaccount.service.ifc.AccountServiceIfc;
@@ -14,11 +13,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @Slf4j
 @RestController
-@RequestMapping("/api/v1")
+@RequestMapping("/accounts")  // API GW will take care of API versioning
 @Api(value="Account Management System")
 public class AccountController {
 
@@ -33,23 +31,20 @@ public class AccountController {
             @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
             @ApiResponse(code = 403, message = "Accessing the resource you were trying to reach is forbidden"),
             @ApiResponse(code = 404, message = "The resource you were trying to reach is not found") })
-    @GetMapping(path = "/accounts")
+    @GetMapping
     public  Iterable<AccountEntity> getAllAccounts(){
         log.debug("Get all accounts");
         return accountServiceIfc.getAllAccounts();
     }
 
-    @GetMapping(path = "/accounts/{clientId}")
-    public ResponseEntity<Optional<AccountEntity>> getAccountById(@PathVariable("clientId") final Long clientId) throws ResourceNotFoundException {
+    @GetMapping(path = "/{clientId}")
+    public ResponseEntity <List<AccountEntity>> getAccountByClientId(@PathVariable("clientId") final Long clientId) {
         log.debug("Get account by client ID: " + clientId);
-        Optional<AccountEntity> account = accountServiceIfc.getAccount(clientId);
-        if(!account.isPresent())
-            throw new ResourceNotFoundException("Account for client ID " + clientId + " is not found");
-
+        List<AccountEntity> account = accountServiceIfc.getAccountByClientId(clientId);
         return ResponseEntity.ok().body(account);
     }
 
-    @PostMapping(path = "/accounts/addAccount")
+    @PostMapping(path = "/addAccount")
     public ResponseEntity<String> createAccount(@RequestBody Account account) {
         log.debug("Creating account");
         
@@ -58,11 +53,10 @@ public class AccountController {
         accountEntity.setClientId(account.getClientId());
         accountServiceIfc.addAccount(accountEntity);
 
-        return ResponseEntity.status(HttpStatus.OK)
-                .body("Account created");
+        return ResponseEntity.status(HttpStatus.OK).body("");
     }
 
-    @GetMapping(value = "/accounts/healthCheck")
+    @GetMapping(value = "/healthCheck")
     public ResponseEntity<String> healthCheck(){
         return ResponseEntity.status(HttpStatus.OK).body("I'm alive");
     }

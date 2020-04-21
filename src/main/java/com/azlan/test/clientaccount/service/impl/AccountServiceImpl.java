@@ -6,7 +6,8 @@ import com.azlan.test.clientaccount.service.ifc.AccountServiceIfc;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import java.util.Optional;
+
+import java.util.List;
 
 @Service
 @Transactional
@@ -20,7 +21,7 @@ public class AccountServiceImpl implements AccountServiceIfc {
         return accountRepository.findAll();
     }
 
-    public Optional<AccountEntity> getAccount(Long clientId){
+    public List<AccountEntity> getAccountByClientId(Long clientId){
 
         return accountRepository.findAccountByClientId(clientId);
     }
