@@ -48,7 +48,7 @@ public class AccountController {
     }
 
     @PostMapping(path = "/addAccount", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<ResponseModel> createAccount(@RequestBody Account account) {
+    public ResponseEntity<String> createAccount(@RequestBody Account account) {
         log.debug("Creating account");
         
         AccountEntity accountEntity = new AccountEntity();
@@ -56,8 +56,7 @@ public class AccountController {
         accountEntity.setClientId(account.getClientId());
         accountServiceIfc.addAccount(accountEntity);
 
-        return ResponseEntity.status(HttpStatus.OK).body(new ResponseModel(new Date(), "OK", "OK")
-        );
+        return ResponseEntity.status(HttpStatus.OK).body("");
     }
 
     @GetMapping(value = "/healthCheck", produces = MediaType.APPLICATION_JSON_VALUE)
